@@ -1,0 +1,46 @@
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    container_name: doc-qna-db
+    restart: always
+    environment:
+      POSTGRES_USER: document_qa
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: document_qa
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U document_qa -d document_qa"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  app:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: doc-qna-app
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/document_qa
+      - SPRING_DATASOURCE_USERNAME=document_qa
+      - SPRING_DATASOURCE_PASSWORD=password123
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=document_qa
+      - POSTGRES_USER=document_qa
+      - POSTGRES_PASSWORD=password123
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:8080/actuator/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgdata:
