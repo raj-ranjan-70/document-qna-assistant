@@ -33,7 +33,7 @@ public class IngestionPipeline {
     }
 
     @Async
-    public void ingestAsync(UUID docId, String tenantId, String category, byte[] bytes, String contentType, String filename) {
+    public void ingestAsync(UUID docId, String tenantId, String title, String category, byte[] bytes, String contentType, String filename) {
         try {
             // 1. Extract text page-by-page
             List<TextExtractor.ExtractedPage> pages = textExtractor.extractText(bytes, contentType, filename);
@@ -50,6 +50,7 @@ public class IngestionPipeline {
                     Map<String, Object> metadata = new HashMap<>();
                     metadata.put("document_id", docId.toString());
                     metadata.put("tenant_id", tenantId);
+                    metadata.put("title", title);
                     metadata.put("category", category);
                     metadata.put("chunk_index", chunkIndex++);
                     metadata.put("page_number", page.pageNumber());

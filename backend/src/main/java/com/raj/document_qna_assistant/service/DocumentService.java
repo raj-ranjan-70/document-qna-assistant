@@ -90,7 +90,7 @@ public class DocumentService {
         documentRepository.save(doc);
 
         // Async ingestion
-        ingestionPipeline.ingestAsync(docId, tenantId, category, bytes, doc.getContentType(), filename);
+        ingestionPipeline.ingestAsync(docId, tenantId, doc.getTitle(), category, bytes, doc.getContentType(), filename);
 
         return new UploadResponse(docId, DocumentStatus.PROCESSING.name());
     }
