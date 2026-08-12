@@ -193,7 +193,7 @@ public class ChatService {
         // 8. Persist Assistant response & citations
         UUID assistantMsgId = UUID.randomUUID();
         int assistantTokens = TokenEstimator.estimateTokens(answer);
-        Message assistantMsg = new Message(assistantMsgId, convId, "ASSISTANT", answer, assistantTokens, "openai", latency, Instant.now());
+        Message assistantMsg = new Message(assistantMsgId, convId, "ASSISTANT", answer, assistantTokens, "gemini", latency, Instant.now());
         messageRepository.save(assistantMsg);
 
         // Save Citations
@@ -354,7 +354,7 @@ public class ChatService {
                         transactionTemplate.executeWithoutResult(status -> {
                             UUID assistantMsgId = UUID.randomUUID();
                             int assistantTokens = TokenEstimator.estimateTokens(finalAnswer);
-                            Message assistantMsg = new Message(assistantMsgId, convId, "ASSISTANT", finalAnswer, assistantTokens, "openai", latency, Instant.now());
+                            Message assistantMsg = new Message(assistantMsgId, convId, "ASSISTANT", finalAnswer, assistantTokens, "gemini", latency, Instant.now());
                             messageRepository.save(assistantMsg);
 
                             for (int i = 0; i < chunks.size(); i++) {

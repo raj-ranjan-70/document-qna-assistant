@@ -17,7 +17,7 @@ public class AppConfig {
     public PgVectorStore vectorStore(JdbcTemplate jdbcTemplate, EmbeddingModel embeddingModel) {
         return PgVectorStore.builder(jdbcTemplate, embeddingModel)
                 .vectorTableName("document_chunks")
-                .dimensions(1536)
+                .dimensions(768)
                 .distanceType(PgVectorStore.PgDistanceType.COSINE_DISTANCE)
                 .initializeSchema(false) // Managed by Flyway
                 .build();

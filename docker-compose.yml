@@ -28,7 +28,8 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/document_qa
       - SPRING_DATASOURCE_USERNAME=document_qa
       - SPRING_DATASOURCE_PASSWORD=password123
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - GOOGLE_GENAI_API_KEY=${GOOGLE_GENAI_API_KEY}
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
       - POSTGRES_PORT=5432
       - POSTGRES_DB=document_qa
       - POSTGRES_USER=document_qa

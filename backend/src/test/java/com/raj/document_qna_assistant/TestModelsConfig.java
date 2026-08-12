@@ -42,7 +42,7 @@ public class TestModelsConfig {
             }
 
             private float[] getVector(String text) {
-                float[] vector = new float[1536];
+                float[] vector = new float[768];
                 if (text == null || text.isBlank()) {
                     vector[0] = 1.0f;
                     return vector;

@@ -2,6 +2,8 @@ package com.raj.document_qna_assistant.service;
 
 import com.raj.document_qna_assistant.entity.DocumentStatus;
 import com.raj.document_qna_assistant.repository.DocumentRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.scheduling.annotation.Async;
@@ -16,6 +18,8 @@ import java.util.UUID;
 
 @Service
 public class IngestionPipeline {
+
+    private static final Logger log = LoggerFactory.getLogger(IngestionPipeline.class);
 
     private final TextExtractor textExtractor;
     private final VectorStore vectorStore;
@@ -71,7 +75,7 @@ public class IngestionPipeline {
             documentRepository.updateStatus(docId, DocumentStatus.READY, null);
 
         } catch (Exception e) {
-            // Update status to FAILED with error reason
+            log.error("Failed to ingest document {}", docId, e);
             documentRepository.updateStatus(docId, DocumentStatus.FAILED, e.getMessage());
         }
     }
