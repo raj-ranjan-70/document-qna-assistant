@@ -24,12 +24,12 @@ services:
     container_name: doc-qna-app
     ports:
       - "8080:8080"
+    env_file:
+      - .env
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/document_qa
       - SPRING_DATASOURCE_USERNAME=document_qa
       - SPRING_DATASOURCE_PASSWORD=password123
-      - GOOGLE_GENAI_API_KEY=${GOOGLE_GENAI_API_KEY}
-      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
       - POSTGRES_PORT=5432
       - POSTGRES_DB=document_qa
       - POSTGRES_USER=document_qa
@@ -42,6 +42,17 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: doc-qna-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      app:
+        condition: service_healthy
 
 volumes:
   pgdata:
