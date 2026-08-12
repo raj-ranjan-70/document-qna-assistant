@@ -31,10 +31,12 @@ public class RetrievalService {
             filterExpression = builder.eq("tenant_id", tenantId).build();
         }
 
-        SearchRequest request = SearchRequest.query(query)
-                .withTopK(topK)
-                .withSimilarityThreshold(threshold)
-                .withFilterExpression(filterExpression);
+        SearchRequest request = SearchRequest.builder()
+                .query(query)
+                .topK(topK)
+                .similarityThreshold(threshold)
+                .filterExpression(filterExpression)
+                .build();
 
         return vectorStore.similaritySearch(request);
     }

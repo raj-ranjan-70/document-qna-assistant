@@ -16,7 +16,6 @@ import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.messages.SystemMessage;
 import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.model.ChatModel;
-import org.springframework.ai.chat.model.ChatResponse as AiChatResponse;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -126,7 +125,7 @@ public class ChatService {
             String title = (String) metadata.getOrDefault("title", "Unknown");
             Integer page = (Integer) metadata.get("page_number");
             Double score = chunk.getScore(); // Cosine similarity score
-            String content = chunk.getContent();
+            String content = chunk.getText();
 
             sources.add(new SourceDto(title, page, score, content));
 
@@ -189,7 +188,7 @@ public class ChatService {
         var response = chatModel.call(prompt);
         long latency = System.currentTimeMillis() - startTime;
 
-        String answer = response.getResult().getOutput().getContent();
+        String answer = response.getResult().getOutput().getText();
 
         // 8. Persist Assistant response & citations
         UUID assistantMsgId = UUID.randomUUID();
@@ -278,7 +277,7 @@ public class ChatService {
                 String title = (String) metadata.getOrDefault("title", "Unknown");
                 Integer page = (Integer) metadata.get("page_number");
                 Double score = chunk.getScore();
-                String content = chunk.getContent();
+                String content = chunk.getText();
 
                 sources.add(new SourceDto(title, page, score, content));
 
@@ -338,7 +337,7 @@ public class ChatService {
             Flux<ServerSentEvent<String>> tokenStream = chatModel.stream(prompt)
                     .map(aiResponse -> {
                         String text = aiResponse.getResult() != null && aiResponse.getResult().getOutput() != null
-                                ? aiResponse.getResult().getOutput().getContent() : "";
+                                ? aiResponse.getResult().getOutput().getText() : "";
                         if (text != null) {
                             answerAccumulator.append(text);
                         }

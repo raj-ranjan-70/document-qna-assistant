@@ -25,7 +25,7 @@ public class TestModelsConfig {
         return new EmbeddingModel() {
             @Override
             public float[] embed(Document document) {
-                return getVector(document.getContent());
+                return getVector(document.getText());
             }
 
             @Override
@@ -74,13 +74,13 @@ public class TestModelsConfig {
         return new ChatModel() {
             @Override
             public ChatResponse call(Prompt prompt) {
-                return new ChatResponse(List.of(new Generation("This is a factual grounded answer from the mock model.")));
+                return new ChatResponse(List.of(new Generation(new org.springframework.ai.chat.messages.AssistantMessage("This is a factual grounded answer from the mock model."))));
             }
 
             @Override
             public Flux<ChatResponse> stream(Prompt prompt) {
                 return Flux.just(
-                        new ChatResponse(List.of(new Generation("Mock streamed answer text.")))
+                        new ChatResponse(List.of(new Generation(new org.springframework.ai.chat.messages.AssistantMessage("Mock streamed answer text."))))
                 );
             }
         };
