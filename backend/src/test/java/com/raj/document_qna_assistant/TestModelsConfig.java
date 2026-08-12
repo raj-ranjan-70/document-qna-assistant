@@ -47,19 +47,8 @@ public class TestModelsConfig {
                     vector[0] = 1.0f;
                     return vector;
                 }
-                int hash = text.hashCode();
-                for (int i = 0; i < 10; i++) {
-                    vector[i] = (float) Math.sin(hash + i);
-                }
-                double sumSq = 0;
-                for (float v : vector) {
-                    sumSq += v * v;
-                }
-                double norm = Math.sqrt(sumSq);
-                if (norm > 0) {
-                    for (int i = 0; i < vector.length; i++) {
-                        vector[i] /= (float) norm;
-                    }
+                if (text.contains("Unrelated")) {
+                    vector[1] = 1.0f;
                 } else {
                     vector[0] = 1.0f;
                 }

@@ -55,7 +55,9 @@ public class IngestionPipeline {
                     metadata.put("document_id", docId.toString());
                     metadata.put("tenant_id", tenantId);
                     metadata.put("title", title);
-                    metadata.put("category", category);
+                    if (category != null) {
+                        metadata.put("category", category);
+                    }
                     metadata.put("chunk_index", chunkIndex++);
                     metadata.put("page_number", page.pageNumber());
 

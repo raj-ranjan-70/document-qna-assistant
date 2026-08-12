@@ -113,6 +113,7 @@ public class DocumentService {
     @Transactional
     public void deleteDocument(UUID id) {
         String tenantId = TenantContext.getCurrentTenant();
+        documentRepository.deleteChunksByDocumentId(id);
         boolean deleted = documentRepository.deleteByIdAndTenantId(id, tenantId);
         if (!deleted) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Document not found");

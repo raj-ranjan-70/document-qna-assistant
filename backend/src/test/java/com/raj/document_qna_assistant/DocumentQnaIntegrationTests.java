@@ -95,7 +95,7 @@ class DocumentQnaIntegrationTests {
         assertEquals("PROCESSING", uploadResponse.status());
 
         // Wait for async ingestion to complete using Awaitility
-        await().atMost(5, TimeUnit.SECONDS).untilAsserted(() -> {
+        await().pollInSameThread().atMost(5, TimeUnit.SECONDS).untilAsserted(() -> {
             DocumentDetailDto detail = documentService.getDocument(uploadResponse.id());
             assertEquals("READY", detail.status());
         });
@@ -133,7 +133,7 @@ class DocumentQnaIntegrationTests {
         UploadResponse uploadB = documentService.uploadDocument(fileB, "HR Policy", "HR");
 
         // Wait for both to be READY
-        await().atMost(5, TimeUnit.SECONDS).untilAsserted(() -> {
+        await().pollInSameThread().atMost(5, TimeUnit.SECONDS).untilAsserted(() -> {
             TenantContext.setCurrentTenant(TENANT_A);
             assertEquals("READY", documentService.getDocument(uploadA.id()).status());
             TenantContext.setCurrentTenant(TENANT_B);
@@ -174,7 +174,7 @@ class DocumentQnaIntegrationTests {
         );
         UploadResponse upload = documentService.uploadDocument(file, "Transport", "TRANSPORT");
 
-        await().atMost(5, TimeUnit.SECONDS).untilAsserted(() -> {
+        await().pollInSameThread().atMost(5, TimeUnit.SECONDS).untilAsserted(() -> {
             assertEquals("READY", documentService.getDocument(upload.id()).status());
         });
 
@@ -201,7 +201,7 @@ class DocumentQnaIntegrationTests {
         );
         UploadResponse upload = documentService.uploadDocument(file, "Guidelines", "HR");
 
-        await().atMost(5, TimeUnit.SECONDS).untilAsserted(() -> {
+        await().pollInSameThread().atMost(5, TimeUnit.SECONDS).untilAsserted(() -> {
             assertEquals("READY", documentService.getDocument(upload.id()).status());
         });
 
@@ -239,7 +239,7 @@ class DocumentQnaIntegrationTests {
         );
         UploadResponse upload = documentService.uploadDocument(file, "School", "HR");
 
-        await().atMost(5, TimeUnit.SECONDS).untilAsserted(() -> {
+        await().pollInSameThread().atMost(5, TimeUnit.SECONDS).untilAsserted(() -> {
             assertEquals("READY", documentService.getDocument(upload.id()).status());
         });
 

@@ -96,6 +96,12 @@ public class DocumentRepository {
         return jdbcTemplate.update(sql, params) > 0;
     }
 
+    public void deleteChunksByDocumentId(UUID documentId) {
+        String sql = "DELETE FROM document_chunks WHERE document_id = :documentId";
+        MapSqlParameterSource params = new MapSqlParameterSource("documentId", documentId);
+        jdbcTemplate.update(sql, params);
+    }
+
     public void updateStatus(UUID id, DocumentStatus status, String errorMessage) {
         String sql = "UPDATE documents SET status = :status, error_message = :errorMessage, updated_at = :updatedAt WHERE id = :id";
         MapSqlParameterSource params = new MapSqlParameterSource()
